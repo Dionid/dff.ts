@@ -1,7 +1,7 @@
 {
-  "name": "@flora-and-fauna-framework/core",
+  "name": "@dff-ts/core",
   "version": "0.0.2",
-  "description": "Flora & Fauna Framework for TS",
+  "description": "Distributed Functions Framework for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -26,7 +26,7 @@
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dionid/flora-and-fauna-framework.ts.git"
+    "url": "https://github.com/Dionid/dff.ts.git"
   },
   "jest": {
     "testEnvironment": "node",
@@ -69,9 +69,9 @@
     "uuid": "^9.0.0"
   },
   "bugs": {
-    "url": "https://github.com/Dionid/flora-and-fauna-framework.ts/issues"
+    "url": "https://github.com/Dionid/dff.ts/issues"
   },
-  "homepage": "https://github.com/Dionid/flora-and-fauna-framework.ts",
+  "homepage": "https://github.com/Dionid/dff.ts",
   "tags": [
     "typescript",
     "algebraic-data-types",
