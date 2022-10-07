@@ -1,5 +1,6 @@
 import fastify, { FastifyRequest } from 'fastify'
 import { v4 } from 'uuid'
+
 import { Call, CallRequest, Trigger } from '../core'
 
 export const HttpTrigger = {
@@ -15,8 +16,10 @@ export const HttpTrigger = {
     const { port = 3000, path = '/call' } = config
 
     const depCalls = calls.reduce((acc, cur) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       acc[cur.name] = cur
+
       return acc
     }, {} as Deps)
 
@@ -33,6 +36,7 @@ export const HttpTrigger = {
       init: async (initDepCalls) => {
         http.post(path, async (req: FastifyRequest<{ Body: CallRequest }>, res) => {
           const call = initDepCalls[req.body.name]
+
           if (call) {
             const response = await call(req.body as ReturnType<Deps[string]['request']>)
 
