@@ -1,0 +1,9 @@
+*.log
+.vscode
+node_modules
+/dist
+/lib
+dev
+.idea
+coverage
+docs/examples
