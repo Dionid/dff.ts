@@ -1,9 +1,12 @@
 {
   "name": "@distributed-functions/trigger-http",
   "version": "0.0.5",
-  "description": "Distributed Functions for TypeScript",
+  "description": "Distributed Functions HTTP Trigger for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "jest --passWithNoTests",
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",
