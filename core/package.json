@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -52,14 +52,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/amqplib": "^0.8.2",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.7",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
     "typescript": "^4.4.4",
     "@types/uuid": "^8.3.4",
-    "amqplib": "^0.10.3",
     "fastify": "^4.7.0",
     "uuid": "^9.0.0"
   },

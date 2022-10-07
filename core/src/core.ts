@@ -2,9 +2,8 @@ import { JSONObject, JSONValue } from '@fddf-ts/core/jsonvalue'
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
 import { v4 } from 'uuid'
 
-import { InmemoryTransport } from '../transport-inmemory'
-
 import { CallErrorResponse, CallErrorResponseError, CallErrorResponseErrorBase } from './call-response-errors'
+import { InmemoryTransport } from './transport-inmemory'
 
 // LIB
 
