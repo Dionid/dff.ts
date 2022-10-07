@@ -1,9 +1,10 @@
 *.log
 .vscode
 node_modules
-/dist
-/lib
+dist
+lib
 dev
+es6
 .idea
 coverage
 docs/examples

@@ -1,6 +1,7 @@
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
-import { Call, CallHandler, DependantCalls, Logger } from '../core'
-import { SubscriberNotFoundError } from '../core/errors'
+
+import { Call, CallHandler, DependantCalls, Logger } from './core'
+import { SubscriberNotFoundError } from './errors'
 
 export const InmemoryTransport = {
   name: 'InmemoryTransaport',
@@ -25,9 +26,11 @@ export const InmemoryTransport = {
       callRequest: ReturnType<C['request']>
     ): Promise<ReturnType<C['result']>> => {
       const sub = subs[callRequest.name]
+
       if (sub) {
         return await sub.handler(callRequest)
       }
+
       throw new SubscriberNotFoundError(`No handler for: ${callRequest.name}`)
     }
 
@@ -61,6 +64,7 @@ export const InmemoryTransport = {
         const depCalls = {} as DependantCalls<Deps>
 
         for (const key of Object.keys(depCallsRaw)) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           depCalls[key] = async (request: ReturnType<C['request']>) => {
             // # Publish dep call and return result
@@ -75,6 +79,7 @@ export const InmemoryTransport = {
             if (reactiveCounter) {
               reactiveCounter.increment()
             }
+
             try {
               return await handler(callRequest, ctx(), depCalls)
             } finally {

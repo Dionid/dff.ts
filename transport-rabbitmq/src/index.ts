@@ -1,12 +1,19 @@
+import { EventEmitter } from 'events'
+
+import {
+  InmemoryTransport,
+  CallErrorResponseErrorBase,
+  Call,
+  CallHandler,
+  DependantCalls,
+  Logger,
+  RequestParser
+} from '@distributed-functions/core'
 import { BaseError, ValidationError } from '@fddf-ts/core/categorized-errors'
 import { JSONObject } from '@fddf-ts/core/jsonvalue'
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
-import amqplib, { Channel, Connection, ConsumeMessage } from 'amqplib'
-import { Options } from 'amqplib'
-import { EventEmitter } from 'events'
-import { Call, CallHandler, DependantCalls, Logger, RequestParser } from '../core'
-import { CallErrorResponseErrorBase } from '../core/call-response-errors'
-import { InmemoryTransport } from '../transport-inmemory'
+import amqplib, { Channel, Connection, ConsumeMessage, Options } from 'amqplib'
+
 import { ReplyTimeoutError } from './errors'
 
 export type RabbitMqClientConfig = {
@@ -33,9 +40,11 @@ const requestParserValidate = (requestParser: RequestParser<any>, asJson: JSONOb
   Object.keys(requestParser).map((key) => {
     const val = requestParser[key]
     const jsonVal = asJson[key]
+
     if (!jsonVal || !val) {
       throw new ValidationError(`Param ${key} is required`)
     }
+
     if (val instanceof Function) {
       val(key, jsonVal)
     } else {
@@ -133,11 +142,12 @@ export const RabbitMQTransport = {
       requestData: ReturnType<C['request']>
     ): Promise<ReturnType<C['result']>> => {
       const localSub = inmemoryTransport.getSub(requestData.name)
+
       if (localSub && strategy === 'local-first' && !localSub.df.persistent) {
         return inmemoryTransport.publish(requestData)
       }
 
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         // QUESTION. Do we need to wait till response
         // reactiveCounter.increment();
 
@@ -199,6 +209,7 @@ export const RabbitMQTransport = {
 
       for (const key of Object.keys(depCallsRaw)) {
         // # Publish dep call and return result
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         depCalls[key] = async (request: ReturnType<C['request']>) => {
           return publish(request)
@@ -384,6 +395,7 @@ export const RabbitMQTransport = {
 
         try {
           const channel = await connection.createChannel()
+
           return !!(await channel.checkQueue(dfCallName))
         } catch (e) {
           if (e instanceof Error) {
@@ -391,6 +403,7 @@ export const RabbitMQTransport = {
               return false
             }
           }
+
           throw e
         }
       }

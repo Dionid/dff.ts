@@ -1,8 +1,9 @@
 import { JSONObject, JSONValue } from '@fddf-ts/core/jsonvalue'
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
 import { v4 } from 'uuid'
-import { InmemoryTransport } from '../transport-inmemory'
+
 import { CallErrorResponse, CallErrorResponseError, CallErrorResponseErrorBase } from './call-response-errors'
+import { InmemoryTransport } from './transport-inmemory'
 
 // LIB
 
@@ -74,6 +75,7 @@ export const Call = <
     },
     result: (props: { id: string; result: RespResult } | { req: CallRequest<Name, ReqParams>; result: RespResult }) => {
       const { result } = props
+
       if ('req' in props) {
         return {
           id: props.req.id,
@@ -88,6 +90,7 @@ export const Call = <
     },
     error: (props: { id: string; error: RespError } | { req: CallRequest<Name, ReqParams>; error: RespError }) => {
       const { error } = props
+
       if ('req' in props) {
         return {
           id: props.req.id,
@@ -142,12 +145,14 @@ export const CallHandler = <
   ) => Promise<ReturnType<Cl['result']>>
 }): CallHandler<Ctx, Deps, Cl> => {
   const { reactiveCounter } = props
+
   return {
     ...props,
     persistent: props.persistent === undefined ? false : props.persistent,
     handler: reactiveCounter
       ? async (req, ctx, depCalls) => {
           reactiveCounter.increment()
+
           try {
             return props.handler(req, ctx, depCalls)
           } finally {
@@ -254,6 +259,7 @@ export const App = <DFs extends Array<CallHandler<any, any, any>>>(props: {
       await Promise.all(
         triggers?.map(async <T extends Trigger<Record<string, Call<any, any, any, any>>>>(tr: T) => {
           const { depCalls, name: triggerName = 'Trigger' } = tr
+
           // # Map throw Dep Calls to register dependencies
           if (depCalls) {
             Object.values(depCalls).map((depCall) => {
@@ -271,6 +277,7 @@ export const App = <DFs extends Array<CallHandler<any, any, any>>>(props: {
 
           for (const key of Object.keys(depCalls)) {
             // # Publish dep call and return result
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             depCallsAsFn[key] = async (request: CallRequest) => {
               return transport.publish(request)
@@ -290,12 +297,13 @@ export const App = <DFs extends Array<CallHandler<any, any, any>>>(props: {
             } else {
               if (!discovery) {
                 const exist = await transport.checkDfExistence(depName)
+
                 if (exist === true) {
-                  console.warn(`CallHandler ${callName} is dependednt on ${depName} that IS presented in transport`)
+                  logger.warn(`CallHandler ${callName} is dependednt on ${depName} that IS presented in transport`)
                 } else if (exist === false) {
-                  console.warn(`CallHandler ${callName} is dependednt on ${depName} that IS NOT presented in transport`)
+                  logger.warn(`CallHandler ${callName} is dependednt on ${depName} that IS NOT presented in transport`)
                 } else {
-                  console.warn(`CallHandler ${callName} is dependednt on ${depName} that CAN'T be dicovered`)
+                  logger.warn(`CallHandler ${callName} is dependednt on ${depName} that CAN'T be dicovered`)
                 }
               }
             }
@@ -309,6 +317,7 @@ export const App = <DFs extends Array<CallHandler<any, any, any>>>(props: {
       if (triggers) {
         await Promise.all(triggers.map((tr) => tr.destroy()))
       }
+
       await transport.destroy()
     }
   }
