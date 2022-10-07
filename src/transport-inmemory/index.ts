@@ -1,5 +1,5 @@
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
-import { Call, DependantCalls, CallHandler, Logger } from '../core'
+import { Call, CallHandler, DependantCalls, Logger } from '../core'
 import { SubscriberNotFoundError } from '../core/errors'
 
 export const InmemoryTransport = {
