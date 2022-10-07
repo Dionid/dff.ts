@@ -26,7 +26,9 @@ export const InmemoryTransport = {
     }
 
     return {
-      init: async () => {},
+      init: async () => {
+        return
+      },
 
       destroy: async () => {
         subs = {}
@@ -46,9 +48,9 @@ export const InmemoryTransport = {
       ): Promise<void> => {
         const { depCalls: depCallsRaw, call, handler } = df
 
-        let depCalls = {} as DependantCalls<Deps>
+        const depCalls = {} as DependantCalls<Deps>
 
-        for (const key in depCallsRaw) {
+        for (const key of Object.keys(depCallsRaw)) {
           // @ts-ignore
           depCalls[key] = async (request: ReturnType<C['request']>) => {
             // # Publish dep call and return result
@@ -58,11 +60,15 @@ export const InmemoryTransport = {
 
         // # Subscribe
         subs[call.name] = async (callRequest: ReturnType<Cl['request']>): Promise<ReturnType<Cl['result']>> => {
-          if (reactiveCounter) reactiveCounter.increment()
+          if (reactiveCounter) {
+            reactiveCounter.increment()
+          }
           try {
             return await handler(callRequest, ctx(), depCalls)
           } finally {
-            if (reactiveCounter) reactiveCounter.decrement()
+            if (reactiveCounter) {
+              reactiveCounter.decrement()
+            }
           }
         }
       },

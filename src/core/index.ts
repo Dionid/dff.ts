@@ -1,6 +1,6 @@
-import { v4 } from 'uuid'
 import { JSONObject, JSONValue } from '@fddf-ts/core/jsonvalue'
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
+import { v4 } from 'uuid'
 import { InmemoryTransport } from '../transport-inmemory'
 import { CallErrorResponse, CallErrorResponseError, CallErrorResponseErrorBase } from './call-response-errors'
 
@@ -209,12 +209,12 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
   discovery?: {
     host: string
   }
-  triggers?: Trigger<any>[]
+  triggers?: Array<Trigger<any>>
   logger?: Logger
 }) => {
   const { name, dfs, triggers, discovery, ctx } = props
 
-  let logger: Logger = props.logger || {
+  const logger: Logger = props.logger || {
     info: console.log,
     error: console.error,
     warn: console.warn
@@ -253,23 +253,23 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
       // # Init triggers
       await Promise.all(
         triggers?.map(async <T extends Trigger<Record<string, Call<any, any, any, any>>>>(tr: T) => {
-          const { depCalls, name = 'Trigger' } = tr
+          const { depCalls, name: triggerName = 'Trigger' } = tr
           // # Map throw Dep Calls to register dependencies
           if (depCalls) {
             Object.values(depCalls).map((depCall) => {
-              if (depsDistributedFunctions[name]) {
-                depsDistributedFunctions[name].push(depCall.name)
+              if (depsDistributedFunctions[triggerName]) {
+                depsDistributedFunctions[triggerName].push(depCall.name)
               } else {
-                depsDistributedFunctions[name] = [depCall.name]
+                depsDistributedFunctions[triggerName] = [depCall.name]
               }
             })
           } else {
             depsDistributedFunctions[name] = []
           }
 
-          let depCallsAsFn = {} as DependantCallsOfTrigger<T>
+          const depCallsAsFn = {} as DependantCallsOfTrigger<T>
 
-          for (const key in depCalls) {
+          for (const key of Object.keys(depCalls)) {
             // # Publish dep call and return result
             // @ts-ignore
             depCallsAsFn[key] = async (request: CallRequest) => {
@@ -282,7 +282,7 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
       )
 
       // # Check all deps
-      for (const callName in depsDistributedFunctions) {
+      for (const callName of Object.keys(depsDistributedFunctions)) {
         await Promise.all(
           depsDistributedFunctions[callName]!.map(async (depName) => {
             if (depsDistributedFunctions[depName]) {

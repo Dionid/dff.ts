@@ -1,10 +1,10 @@
-import { Call, CallRequest, Trigger } from '../core'
 import fastify, { FastifyRequest } from 'fastify'
 import { v4 } from 'uuid'
+import { Call, CallRequest, Trigger } from '../core'
 
 export const HttpTrigger = {
   new: <Deps extends Record<string, Call<any, any, any, any>>>(props: {
-    calls: Call<any, any, any, any>[]
+    calls: Array<Call<any, any, any, any>>
     config?: {
       port?: number
       path?: string
@@ -30,9 +30,9 @@ export const HttpTrigger = {
       destroy: async () => {
         await http.close()
       },
-      init: async (calls) => {
+      init: async (initDepCalls) => {
         http.post(path, async (req: FastifyRequest<{ Body: CallRequest }>, res) => {
-          const call = calls[req.body.name]
+          const call = initDepCalls[req.body.name]
           if (call) {
             const response = await call(req.body as ReturnType<Deps[string]['request']>)
 

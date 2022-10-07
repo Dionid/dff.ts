@@ -6,6 +6,7 @@
   "types": "index.d.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
+    "lint:fix": "tslint -p tsconfig.json --fix",
     "lint": "tslint -p tsconfig.json",
     "prettier": "prettier --list-different \"./src/**/*.ts\"",
     "fix-prettier": "prettier --write \"./src/**/*.ts\"",

@@ -1,13 +1,13 @@
-import amqplib, { Channel, Connection, ConsumeMessage } from 'amqplib'
-import { EventEmitter } from 'events'
-import { Options } from 'amqplib'
-import { Call, DependantCalls, DistributedFunction, Logger, RequestParser } from '../core'
-import { ReplyTimeoutError } from './errors'
-import { CallErrorResponseErrorBase } from '../core/call-response-errors'
 import { BaseError, ValidationError } from '@fddf-ts/core/categorized-errors'
 import { JSONObject } from '@fddf-ts/core/jsonvalue'
-import { InmemoryTransport } from '../transport-inmemory'
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
+import amqplib, { Channel, Connection, ConsumeMessage } from 'amqplib'
+import { Options } from 'amqplib'
+import { EventEmitter } from 'events'
+import { Call, DependantCalls, DistributedFunction, Logger, RequestParser } from '../core'
+import { CallErrorResponseErrorBase } from '../core/call-response-errors'
+import { InmemoryTransport } from '../transport-inmemory'
+import { ReplyTimeoutError } from './errors'
 
 export type RabbitMqClientConfig = {
   host: string
@@ -107,7 +107,7 @@ export const RabbitMQTransport = {
       timeout = 30000
     } = props
 
-    let logger: Logger = props?.logger || {
+    const logger: Logger = props?.logger || {
       info: console.log,
       error: console.error,
       warn: console.warn
@@ -194,9 +194,9 @@ export const RabbitMQTransport = {
       // TODO. Add prefetch in DF
       const prefetch = deafultPrefetch
 
-      let depCalls = {} as DependantCalls<Deps>
+      const depCalls = {} as DependantCalls<Deps>
 
-      for (const key in depCallsRaw) {
+      for (const key of Object.keys(depCallsRaw)) {
         // # Publish dep call and return result
         // @ts-ignore
         depCalls[key] = async (request: ReturnType<C['request']>) => {
@@ -241,7 +241,7 @@ export const RabbitMQTransport = {
         async (msg) => {
           if (msg) {
             try {
-              let asJson = JSON.parse(msg.content.toString()) as ReturnType<Cl['request']>
+              const asJson = JSON.parse(msg.content.toString()) as ReturnType<Cl['request']>
 
               const { requestParser } = call
 
@@ -249,7 +249,9 @@ export const RabbitMQTransport = {
                 requestParserValidate(requestParser, asJson.params)
               }
 
-              if (reactiveCounter) reactiveCounter.increment()
+              if (reactiveCounter) {
+                reactiveCounter.increment()
+              }
 
               try {
                 const res = await handler(asJson, ctx(), depCalls)
@@ -266,7 +268,9 @@ export const RabbitMQTransport = {
                   }
                 )
               } finally {
-                if (reactiveCounter) reactiveCounter.decrement()
+                if (reactiveCounter) {
+                  reactiveCounter.decrement()
+                }
               }
             } catch (e: any) {
               let errorResponseData: CallErrorResponseErrorBase
