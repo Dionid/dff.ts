@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -22,7 +22,7 @@
     "postpublish": "git clean -fd",
     "preversion": "npm run lint:write",
     "version": "npm run prettier:write && git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags && git clean -fd"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
