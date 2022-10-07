@@ -1,0 +1,73 @@
+{
+  "name": "@distributed-functions/transport-rabbitmq",
+  "version": "0.0.5",
+  "description": "Distributed Functions RabbitMQ Transport for TypeScript",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",
+    "prettier:write": "npm run prettier:base -- --write",
+    "prettier:check": "npm run prettier:base -- --check",
+    "lint:check": "eslint --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
+    "lint:write": "npm run lint:check -- --fix",
+    "clean": "rimraf ./lib",
+    "prerelease": "npm run build",
+    "prebuild": "npm run clean",
+    "build:lib": "tsc -P tsconfig.build.json",
+    "build:es": "tsc -P tsconfig.build-es6.json",
+    "build": "npm run build:lib && npm run build:es",
+    "prepare": "npm run build && cp -r ./lib/* . && rm -rf ./lib",
+    "prepublishOnly": "npm run lint:write",
+    "postpublish": "git clean -fd",
+    "preversion": "npm run lint:write",
+    "version": "npm run prettier:write && git add -A src",
+    "postversion": "git push && git push --tags && git clean -fd"
+  },
+  "author": "David Shekunts <ditreyw@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dionid/distributed-functions-ts.git"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "preset": "ts-jest",
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": true
+      }
+    }
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/amqplib": "^0.8.2",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.7",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4",
+    "amqplib": "^0.10.3"
+  },
+  "bugs": {
+    "url": "https://github.com/Dionid/distributed-functions-ts/issues"
+  },
+  "homepage": "https://github.com/Dionid/distributed-functions-ts",
+  "tags": [
+    "typescript"
+  ],
+  "keywords": [
+    "typescript"
+  ]
+}
