@@ -1,7 +1,7 @@
 {
-  "name": "@dff-ts/core",
+  "name": "@distributed-functions/core",
   "version": "0.0.3",
-  "description": "Distributed Functions Framework for TypeScript",
+  "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -26,7 +26,7 @@
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dionid/dff.ts.git"
+    "url": "https://github.com/Dionid/distributed-functions-ts.git"
   },
   "jest": {
     "testEnvironment": "node",
@@ -69,9 +69,9 @@
     "uuid": "^9.0.0"
   },
   "bugs": {
-    "url": "https://github.com/Dionid/dff.ts/issues"
+    "url": "https://github.com/Dionid/distributed-functions-ts/issues"
   },
-  "homepage": "https://github.com/Dionid/dff.ts",
+  "homepage": "https://github.com/Dionid/distributed-functions-ts",
   "tags": [
     "typescript",
     "algebraic-data-types",

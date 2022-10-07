@@ -1,5 +1,5 @@
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
-import { Call, DependantCalls, DistributedFunction, Logger } from '../core'
+import { Call, DependantCalls, CallHandler, Logger } from '../core'
 import { SubscriberNotFoundError } from '../core/errors'
 
 export const InmemoryTransport = {
@@ -16,7 +16,7 @@ export const InmemoryTransport = {
     let subs: Record<
       string,
       {
-        df: DistributedFunction<any, any, any>
+        df: CallHandler<any, any, any>
         handler: (callRequest: any) => Promise<any>
       }
     > = {}
@@ -53,7 +53,7 @@ export const InmemoryTransport = {
         Deps extends Record<string, Call<any, any, any, any>>,
         Cl extends Call<any, any, any, any>
       >(
-        df: DistributedFunction<Ctx, Deps, Cl>,
+        df: CallHandler<Ctx, Deps, Cl>,
         ctx: () => Ctx
       ): Promise<void> => {
         const { depCalls: depCallsRaw, call, handler } = df

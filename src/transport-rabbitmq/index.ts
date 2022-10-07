@@ -4,7 +4,7 @@ import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
 import amqplib, { Channel, Connection, ConsumeMessage } from 'amqplib'
 import { Options } from 'amqplib'
 import { EventEmitter } from 'events'
-import { Call, DependantCalls, DistributedFunction, Logger, RequestParser } from '../core'
+import { Call, DependantCalls, CallHandler, Logger, RequestParser } from '../core'
 import { CallErrorResponseErrorBase } from '../core/call-response-errors'
 import { InmemoryTransport } from '../transport-inmemory'
 import { ReplyTimeoutError } from './errors'
@@ -125,7 +125,7 @@ export const RabbitMQTransport = {
     let globalChannel: Channel
 
     const subs: Array<{
-      df: DistributedFunction<any, any, any>
+      df: CallHandler<any, any, any>
       ctx: () => any
     }> = []
 
@@ -182,7 +182,7 @@ export const RabbitMQTransport = {
       Deps extends Record<string, Call<any, any, any, any>>,
       Cl extends Call<any, any, any, any>
     >(
-      df: DistributedFunction<Ctx, Deps, Cl>,
+      df: CallHandler<Ctx, Deps, Cl>,
       ctx: () => Ctx
     ) => {
       subs.push({

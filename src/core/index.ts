@@ -111,7 +111,7 @@ export type DependantCallsOfTrigger<T extends Trigger<any>> = T extends Trigger<
   ? DependantCalls<Deps>
   : unknown
 
-export type DistributedFunction<
+export type CallHandler<
   Ctx extends Record<any, any>,
   Deps extends Record<string, Call<any, any, any, any>>,
   Cl extends Call<any, any, any, any>
@@ -126,7 +126,7 @@ export type DistributedFunction<
   ) => Promise<ReturnType<Cl['result']>>
 }
 
-export const DistributedFunction = <
+export const CallHandler = <
   Ctx extends Record<any, any>,
   Deps extends Record<string, Call<any, any, any, any>>,
   Cl extends Call<any, any, any, any>
@@ -140,7 +140,7 @@ export const DistributedFunction = <
     ctx: Ctx,
     depCalls: DependantCalls<Deps>
   ) => Promise<ReturnType<Cl['result']>>
-}): DistributedFunction<Ctx, Deps, Cl> => {
+}): CallHandler<Ctx, Deps, Cl> => {
   const { reactiveCounter } = props
   return {
     ...props,
@@ -187,7 +187,7 @@ export type Transport = {
     Deps extends Record<string, Call<any, any, any, any>>,
     Cl extends Call<any, any, any, any> = Call
   >(
-    df: DistributedFunction<Ctx, Deps, Cl>,
+    df: CallHandler<Ctx, Deps, Cl>,
     ctx: () => Ctx
   ) => Promise<void>
   destroy: () => Promise<void>
@@ -196,12 +196,12 @@ export type Transport = {
 }
 
 export type UnitedCtx<T extends any[]> = T extends [infer DF, ...infer Rest]
-  ? DF extends DistributedFunction<infer Ctx, any, any>
+  ? DF extends CallHandler<infer Ctx, any, any>
     ? Ctx & UnitedCtx<Rest>
     : unknown
   : unknown
 
-export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props: {
+export const App = <DFs extends Array<CallHandler<any, any, any>>>(props: {
   name: string
   dfs: DFs
   ctx: () => UnitedCtx<DFs>
@@ -222,7 +222,7 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
 
   const { transport = InmemoryTransport.new({ logger }) } = props
 
-  const depsDistributedFunctions: Record<string, string[]> = {}
+  const depsCallHandlers: Record<string, string[]> = {}
 
   return {
     name,
@@ -236,12 +236,12 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
           const { depCalls } = df
 
           // # Map throw Dep Calls to register dependencies
-          depsDistributedFunctions[df.call.name] = []
+          depsCallHandlers[df.call.name] = []
 
           if (depCalls) {
             Object.values(depCalls).map((depCallRaw) => {
               const depCall = depCallRaw as Call
-              depsDistributedFunctions[df.call.name]!.push(depCall.name)
+              depsCallHandlers[df.call.name]!.push(depCall.name)
             })
           }
 
@@ -257,14 +257,14 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
           // # Map throw Dep Calls to register dependencies
           if (depCalls) {
             Object.values(depCalls).map((depCall) => {
-              if (depsDistributedFunctions[triggerName]) {
-                depsDistributedFunctions[triggerName].push(depCall.name)
+              if (depsCallHandlers[triggerName]) {
+                depsCallHandlers[triggerName].push(depCall.name)
               } else {
-                depsDistributedFunctions[triggerName] = [depCall.name]
+                depsCallHandlers[triggerName] = [depCall.name]
               }
             })
           } else {
-            depsDistributedFunctions[name] = []
+            depsCallHandlers[name] = []
           }
 
           const depCallsAsFn = {} as DependantCallsOfTrigger<T>
@@ -282,24 +282,20 @@ export const App = <DFs extends Array<DistributedFunction<any, any, any>>>(props
       )
 
       // # Check all deps
-      for (const callName of Object.keys(depsDistributedFunctions)) {
+      for (const callName of Object.keys(depsCallHandlers)) {
         await Promise.all(
-          depsDistributedFunctions[callName]!.map(async (depName) => {
-            if (depsDistributedFunctions[depName]) {
-              logger.info(`DistributedFunction ${callName} is dependednt on ${depName} tart IS presented localy`)
+          depsCallHandlers[callName]!.map(async (depName) => {
+            if (depsCallHandlers[depName]) {
+              logger.info(`CallHandler ${callName} is dependednt on ${depName} tart IS presented localy`)
             } else {
               if (!discovery) {
                 const exist = await transport.checkDfExistence(depName)
                 if (exist === true) {
-                  console.warn(
-                    `DistributedFunction ${callName} is dependednt on ${depName} that IS presented in transport`
-                  )
+                  console.warn(`CallHandler ${callName} is dependednt on ${depName} that IS presented in transport`)
                 } else if (exist === false) {
-                  console.warn(
-                    `DistributedFunction ${callName} is dependednt on ${depName} that IS NOT presented in transport`
-                  )
+                  console.warn(`CallHandler ${callName} is dependednt on ${depName} that IS NOT presented in transport`)
                 } else {
-                  console.warn(`DistributedFunction ${callName} is dependednt on ${depName} that CAN'T be dicovered`)
+                  console.warn(`CallHandler ${callName} is dependednt on ${depName} that CAN'T be dicovered`)
                 }
               }
             }
