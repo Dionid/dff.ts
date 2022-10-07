@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -58,7 +58,6 @@
     "ts-jest": "^27.0.7",
     "typescript": "^4.4.4",
     "@types/uuid": "^8.3.4",
-    "fastify": "^4.7.0",
     "uuid": "^9.0.0"
   },
   "bugs": {

@@ -5,7 +5,9 @@
   "main": "index.js",
   "types": "index.d.ts",
   "workspaces": [
-    "core"
+    "core",
+    "transport-rabbitmq",
+    "trigger-http"
   ],
   "scripts": {
     "lerna:install": "lerna bootstrap",

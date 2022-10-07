@@ -4,6 +4,7 @@ node_modules
 dist
 lib
 dev
+es6
 .idea
 coverage
 docs/examples
