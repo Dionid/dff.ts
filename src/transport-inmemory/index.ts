@@ -13,14 +13,20 @@ export const InmemoryTransport = {
     //   warn: console.warn
     // }
 
-    let subs: Record<string, (callRequest: any) => Promise<any>> = {}
+    let subs: Record<
+      string,
+      {
+        df: DistributedFunction<any, any, any>
+        handler: (callRequest: any) => Promise<any>
+      }
+    > = {}
 
     const publish = async <C extends Call<any, any, any, any>>(
       callRequest: ReturnType<C['request']>
     ): Promise<ReturnType<C['result']>> => {
-      const handler = subs[callRequest.name]
-      if (handler) {
-        return await handler(callRequest)
+      const sub = subs[callRequest.name]
+      if (sub) {
+        return await sub.handler(callRequest)
       }
       throw new SubscriberNotFoundError(`No handler for: ${callRequest.name}`)
     }
@@ -28,6 +34,10 @@ export const InmemoryTransport = {
     return {
       init: async () => {
         return
+      },
+
+      getSub: (callName: string) => {
+        return subs[callName]
       },
 
       destroy: async () => {
@@ -59,15 +69,18 @@ export const InmemoryTransport = {
         }
 
         // # Subscribe
-        subs[call.name] = async (callRequest: ReturnType<Cl['request']>): Promise<ReturnType<Cl['result']>> => {
-          if (reactiveCounter) {
-            reactiveCounter.increment()
-          }
-          try {
-            return await handler(callRequest, ctx(), depCalls)
-          } finally {
+        subs[call.name] = {
+          df,
+          handler: async (callRequest: ReturnType<Cl['request']>): Promise<ReturnType<Cl['result']>> => {
             if (reactiveCounter) {
-              reactiveCounter.decrement()
+              reactiveCounter.increment()
+            }
+            try {
+              return await handler(callRequest, ctx(), depCalls)
+            } finally {
+              if (reactiveCounter) {
+                reactiveCounter.decrement()
+              }
             }
           }
         }

@@ -132,7 +132,8 @@ export const RabbitMQTransport = {
     const publish = async <C extends Call<any, any, any, any>>(
       requestData: ReturnType<C['request']>
     ): Promise<ReturnType<C['result']>> => {
-      if (strategy === 'local-first' && (await inmemoryTransport.checkDfExistence(requestData.name))) {
+      const localSub = inmemoryTransport.getSub(requestData.name)
+      if (localSub && strategy === 'local-first' && !localSub.df.persistent) {
         return inmemoryTransport.publish(requestData)
       }
 
