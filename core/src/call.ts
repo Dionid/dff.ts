@@ -53,6 +53,7 @@ export type Call<
 > = {
   name: Name
   requestParser?: RequestParser<ReqParams>
+  sideEffects?: boolean
   request: (params: ReqParams, id?: string) => CallRequest<Name, ReqParams>
   result: (
     props: { id: string; result: RespResult } | { req: CallRequest<Name, ReqParams>; result: RespResult }
@@ -75,11 +76,17 @@ export const Call = <
   RespError extends CallErrorResponseErrorBase = CallErrorResponseError
 >(
   name: Name,
-  requestParser?: RequestParser<ReqParams> // TODO. Create from ReqParams
+  props: {
+    sideEffects?: boolean
+    requestParser?: RequestParser<ReqParams> // TODO. Create from ReqParams
+  }
 ): Call<Name, ReqParams, RespResult, RespError> => {
+  const { sideEffects = false, requestParser } = props
+
   return {
     name,
     requestParser,
+    sideEffects,
     request: (params: ReqParams, id?: string) => {
       return {
         id: id || v4(),
