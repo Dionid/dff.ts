@@ -9,6 +9,7 @@ export type CallErrorResponseErrorBase<
 }
 
 export type CallServerErrorResponseError = CallErrorResponseErrorBase<500, 'Internal Server Error'>
+export type CallRequestTimeoutErrorResponseError = CallErrorResponseErrorBase<408, 'Request timeout'>
 export type CallNotFoundErrorResponseError = CallErrorResponseErrorBase<404>
 export type CallForbiddenErrorResponseError = CallErrorResponseErrorBase<403>
 export type CallBadRequestErrorResponseError = CallErrorResponseErrorBase<422>
@@ -18,6 +19,7 @@ export type CallErrorResponseError =
   | CallNotFoundErrorResponseError
   | CallForbiddenErrorResponseError
   | CallBadRequestErrorResponseError
+  | CallRequestTimeoutErrorResponseError
 
 export type CallErrorResponse<RespError extends CallErrorResponseErrorBase = CallErrorResponseError> = {
   id: string

@@ -8,3 +8,4 @@ es6
 .idea
 coverage
 docs/examples
+.env

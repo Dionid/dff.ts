@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.8",
+  "version": "0.0.11",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -55,6 +55,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@fddf-ts/core": "^0.0.13",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.7",
     "@types/uuid": "^8.3.4",
