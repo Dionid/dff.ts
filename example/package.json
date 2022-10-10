@@ -9,6 +9,6 @@
     "devDependencies": {
         "@distributed-functions/core": "^0.0.11",
         "@distributed-functions/transport-rabbitmq": "^0.0.9",
-        "@distributed-functions/trigger-http": "^0.0.8"
+        "@distributed-functions/trigger-http": "^0.0.9"
     }
 }

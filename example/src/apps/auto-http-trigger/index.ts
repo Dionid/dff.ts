@@ -16,14 +16,14 @@ export const main = async () => {
     }
   })
 
+  const httpTrigger = HttpTrigger.new({
+    calls: [WithdrawMoneyCall]
+  })
+
   const app = App({
     name: 'iam',
     dfs: [],
-    triggers: [
-      HttpTrigger.new({
-        calls: [WithdrawMoneyCall]
-      })
-    ],
+    triggers: [httpTrigger],
     transport,
     ctx: () => {
       return {}
