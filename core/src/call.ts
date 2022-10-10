@@ -79,7 +79,7 @@ export const Call = <
   props: {
     sideEffects?: boolean
     requestParser?: RequestParser<ReqParams> // TODO. Create from ReqParams
-  }
+  } = {}
 ): Call<Name, ReqParams, RespResult, RespError> => {
   const { sideEffects = false, requestParser } = props
 

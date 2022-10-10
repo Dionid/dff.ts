@@ -19,7 +19,7 @@ export const InmemoryTransport = {
     let subs: Record<
       string,
       {
-        df: CallHandler<any, any, any>
+        df: CallHandler<any, any, Call<any, any, any, any>>
         handler: (callRequest: any) => Promise<any>
       }
     > = {}

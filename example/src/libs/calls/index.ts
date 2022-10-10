@@ -32,10 +32,12 @@ export const WithdrawMoneyCall = Call<
     message: 'Shiiiit'
   }
 >('WithdrawMoney', {
-  amount: JSONValue.toNumber,
-  address: JSONValue.toString,
-  test: {
-    foo: JSONValue.toString
+  requestParser: {
+    amount: JSONValue.toNumber,
+    address: JSONValue.toString,
+    test: {
+      foo: JSONValue.toString
+    }
   }
 })
 

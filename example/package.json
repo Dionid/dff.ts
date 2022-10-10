@@ -7,7 +7,7 @@
         "build": "rimraf dist && tsc"
     },
     "devDependencies": {
-        "@distributed-functions/core": "^0.0.11",
+        "@distributed-functions/core": "^0.0.14",
         "@distributed-functions/transport-rabbitmq": "^0.0.9",
         "@distributed-functions/trigger-http": "^0.0.9"
     }

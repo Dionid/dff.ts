@@ -141,7 +141,7 @@ export const RabbitMQTransport = {
     ): Promise<ReturnType<C['result']> | ReturnType<C['error']>> => {
       const localSub = inmemoryTransport.getSub(requestData.name)
 
-      if (localSub && strategy === 'local-first' && !localSub.df.persistent) {
+      if (localSub && strategy === 'local-first' && !localSub.df.persistent && !localSub.df.call.sideEffects) {
         return inmemoryTransport.publish(requestData)
       }
 
