@@ -14,8 +14,6 @@ import { JSONObject } from '@fddf-ts/core/jsonvalue'
 import { ReactiveCounter } from '@fddf-ts/core/reactive-counter'
 import amqplib, { Channel, Connection, ConsumeMessage, Options } from 'amqplib'
 
-import { ReplyTimeoutError } from './errors'
-
 export type RabbitMqClientConfig = {
   host: string
   port: number
@@ -140,14 +138,14 @@ export const RabbitMQTransport = {
 
     const publish = async <C extends Call<any, any, any, any>>(
       requestData: ReturnType<C['request']>
-    ): Promise<ReturnType<C['result']>> => {
+    ): Promise<ReturnType<C['result']> | ReturnType<C['error']>> => {
       const localSub = inmemoryTransport.getSub(requestData.name)
 
       if (localSub && strategy === 'local-first' && !localSub.df.persistent) {
         return inmemoryTransport.publish(requestData)
       }
 
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         // QUESTION. Do we need to wait till response
         // reactiveCounter.increment();
 
@@ -167,7 +165,14 @@ export const RabbitMQTransport = {
         const tid = setTimeout(() => {
           // reactiveCounter.decrement();
           responseEmitter.removeAllListeners(correlationId)
-          reject(new ReplyTimeoutError(correlationId, requestData))
+          resolve({
+            id: requestData.id,
+            error: {
+              code: 408,
+              message: 'Request timeout'
+            }
+          } as ReturnType<C['error']>)
+          // reject(new ReplyTimeoutError(correlationId, requestData))
         }, timeout)
 
         // # Listen for the content emitted on the correlationId event
@@ -175,7 +180,7 @@ export const RabbitMQTransport = {
           // reactiveCounter.decrement();
           clearTimeout(tid)
           resolve(
-            JSON.parse(data.content.toString()) // TODO. Add parser
+            JSON.parse(data.content.toString()) // TODO. Add Response parser
           )
         })
 
