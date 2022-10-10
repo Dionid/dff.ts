@@ -1,12 +1,14 @@
 {
     "name": "@distributed-functions/example",
     "dependencies": {
-        "@distributed-functions/core": "^0.0.7",
-        "@distributed-functions/transport-rabbitmq": "^0.0.5",
-        "@distributed-functions/trigger-http": "^0.0.5",
         "@fddf-ts/core": "^0.0.13"
     },
     "scripts": {
         "build": "rimraf dist && tsc"
+    },
+    "devDependencies": {
+        "@distributed-functions/core": "^0.0.11",
+        "@distributed-functions/transport-rabbitmq": "^0.0.9",
+        "@distributed-functions/trigger-http": "^0.0.8"
     }
 }

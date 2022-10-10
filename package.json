@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "lerna:install": "lerna bootstrap",
-    "lerna:build": "lerna run build"
+    "lerna:build": "lerna run build",
+    "lerna:postpublish": "lerna run postpublish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {

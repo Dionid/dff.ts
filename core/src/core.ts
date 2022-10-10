@@ -198,7 +198,7 @@ export type Transport = {
   destroy: () => Promise<void>
   publish: <C extends Call<any, any, any, any>>(
     data: ReturnType<C['request']>
-  ) => Promise<ReturnType<C['result']>> | Promise<ReturnType<C['error']>>
+  ) => Promise<ReturnType<C['result']> | ReturnType<C['error']>>
   checkDfExistence: (dfCallName: string) => Promise<boolean | undefined>
 }
 
