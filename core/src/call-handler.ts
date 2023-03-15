@@ -3,7 +3,7 @@ import { EventsRecord } from './event'
 import { CallsToPublish, EventsToPublish } from './publishers'
 
 export type CallHandlerRun<
-  C extends Call<any, any, any>, // 100% because need to define Call
+  C extends Call<any, any, any, any>, // 100% because need to define Call
   Ctx extends Record<any, any>, // 100% because need to define Ctx from outside
   ER extends EventsRecord | undefined,
   CR extends CallsRecord | undefined
@@ -17,7 +17,7 @@ export type CallHandlerRun<
 ) => Promise<ResponseFromCall<C>>
 
 export type CallHandler<
-  C extends Call<any, any, any>,
+  C extends Call<any, any, any, any>,
   Ctx extends Record<any, any>,
   ER extends EventsRecord | undefined,
   CR extends CallsRecord | undefined
@@ -32,7 +32,7 @@ export type CallHandler<
 }
 
 export const CallHandler = <
-  C extends Call<string, any, any>,
+  C extends Call<string, any, any, any>,
   Ctx extends Record<any, any>,
   ER extends EventsRecord | undefined = undefined,
   CR extends CallsRecord | undefined = undefined

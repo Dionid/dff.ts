@@ -1,7 +1,7 @@
 import { Call, RequestFromCall, ResponseFromCall, CallsRecord } from './call'
 import { Event, MessageFromEvent, EventsRecord } from './event'
 
-export type PublishCall<C extends Call<any, any, any>> = (
+export type PublishCall<C extends Call<any, any, any, any>> = (
   request: RequestFromCall<C>,
   options?: { timeout?: number; mandatory?: boolean },
   assignedCalls?: CallsPublisher<any>, // # This needed to send other here some assignedCalls from external Transport
@@ -13,7 +13,7 @@ export type CallsToPublish<CR extends CallsRecord> = {
 }
 
 export type CallsPublisher<CR extends CallsRecord> = {
-  publish: <C extends Call<any, any, any>>(
+  publish: <C extends Call<any, any, any, any>>(
     request: RequestFromCall<C>,
     options?: { timeout?: number; mandatory?: boolean },
     assignedCalls?: CallsToPublish<any>, // # This needed to send other here some assignedCalls from external Transport

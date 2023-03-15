@@ -54,7 +54,7 @@ export const InMemoryTransport = <Ctx extends Record<any, any>, ER extends Event
 
   // # PUBLISH CALL
 
-  const publishCall = async <C extends Call<any, CallRequest<string, any>, any>>(
+  const publishCall = async <C extends Call<any, any, CallRequest<string, any, any>, any>>(
     callRequest: RequestFromCall<C>,
     _?: { timeout?: number; mandatory?: boolean },
     assignedCalls?: CallsToPublish<any>, // # This needed to send other here some assignedCalls from external Transport
@@ -79,7 +79,7 @@ export const InMemoryTransport = <Ctx extends Record<any, any>, ER extends Event
 
   // # PUBLISH EVENTS
 
-  const publishEvent = async <E extends Event<string, EventMessage<string, any>>>(
+  const publishEvent = async <E extends Event<string, EventMessage<string, any, any>>>(
     event: MessageFromEvent<E>,
     _?: { mandatory?: boolean },
     assignedCalls?: CallsToPublish<any>, // # This needed to send other here some assignedCalls from external Transport
@@ -135,7 +135,7 @@ export const InMemoryTransport = <Ctx extends Record<any, any>, ER extends Event
     // # CALL
     call: {
       publish: publishCall,
-      subscribe: async <C extends Call<string, any, any>>(
+      subscribe: async <C extends Call<string, any, any, any>>(
         call: C,
         run: CallHandlerRun<C, Ctx, ER, CR>,
         options?: {
@@ -150,7 +150,7 @@ export const InMemoryTransport = <Ctx extends Record<any, any>, ER extends Event
           eventsToPublish
         })
       },
-      subscribeHandler: async (callHandler: CallHandler<Call<string, any, any>, Ctx, any, any>) => {
+      subscribeHandler: async (callHandler: CallHandler<Call<string, any, any, any>, Ctx, any, any>) => {
         callSubscribersMap[callHandler.call.name] = callHandler
 
         return

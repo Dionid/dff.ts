@@ -6,7 +6,7 @@ import { CallsPublisher, EventsPublisher, CallsToPublish, EventsToPublish } from
 
 // # SUBSCRIBER
 export type CallSubscriber<Ctx extends Record<any, any>, ER extends EventsRecord, CR extends CallsRecord> = {
-  subscribe: <C extends Call<any, any, any>>(
+  subscribe: <C extends Call<any, any, any, any>>(
     call: C,
     run: CallHandlerRun<C, Ctx, ER, CR>,
     options?: {
@@ -14,7 +14,7 @@ export type CallSubscriber<Ctx extends Record<any, any>, ER extends EventsRecord
     }
   ) => Promise<void>
 
-  subscribeHandler: (callHandler: CallHandler<Call<string, any, any>, Ctx, any, any>) => Promise<void>
+  subscribeHandler: (callHandler: CallHandler<Call<string, any, any, any>, Ctx, any, any>) => Promise<void>
 }
 
 export type EventSubscriber<Ctx extends Record<any, any>, ER extends EventsRecord, CR extends CallsRecord> = {
@@ -53,7 +53,7 @@ export type Transport<Ctx extends Record<any, any>, ER extends EventsRecord, CR 
   TransportInitializer<Ctx>
 
 export const bindTransportToCalls = <CR extends CallsRecord>(
-  publishCall: <C extends Call<any, any, any>>(
+  publishCall: <C extends Call<any, any, any, any>>(
     request: RequestFromCall<C>,
     options?: { timeout?: number; mandatory?: boolean },
     assignedCalls?: CallsToPublish<any>, // # This needed to send other here some assignedCalls from external Transport
