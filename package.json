@@ -6,10 +6,10 @@
   "types": "index.d.ts",
   "workspaces": [
     "core",
-    "transport-rabbitmq",
-    "trigger-http"
+    "transport-rabbitmq"
   ],
   "scripts": {
+    "lint-staged": "lint-staged",
     "lerna:install": "lerna bootstrap",
     "lerna:build": "lerna run build",
     "lerna:postpublish": "lerna run postpublish"
@@ -19,26 +19,17 @@
     "type": "git",
     "url": "https://github.com/Dionid/distributed-functions-ts.git"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "npm run spell:check",
+      "npm run lint:fix",
+      "npm run format:fix",
+      "git add"
     ],
-    "preset": "ts-jest",
-    "collectCoverage": true,
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "lcov",
-      "text"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true
-      }
-    }
+    "**/*.{js,yml,yaml,json,md}": [
+      "npm run format:fix",
+      "git add"
+    ]
   },
   "license": "MIT",
   "devDependencies": {
@@ -54,7 +45,8 @@
     "nx": "^14.8.3",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.4.4"
+    "typescript": "^4.9.4",
+    "lint-staged": "^13.1.2"
   },
   "bugs": {
     "url": "https://github.com/Dionid/distributed-functions-ts/issues"
