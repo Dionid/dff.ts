@@ -1,0 +1,9 @@
+{
+  "version": "0.1",
+  "language": "en",
+  "words": [
+    "fapfop"
+  ],
+  "flagWords": [],
+  "ignorePaths": ["package.json", "package-lock.json", "tsconfig.json", "node_modules/**"]
+}
