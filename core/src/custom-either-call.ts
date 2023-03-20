@@ -42,62 +42,61 @@ export type CustomEitherCall<
   ) => CallResponse<CustomEitherCallResponseResultFailure<Failure>, Meta>
 }
 
-export const CustomEitherCall =
-  <
-    Name extends string,
-    Meta extends Record<any, any>,
-    Params extends Record<any, any>,
-    Success extends Record<any, any>,
-    Failure extends DefaultCallResponseResultFailure = DefaultCallResponseResultFailure
-  >(
-    metaConstructor: (meta?: Partial<Meta>) => Meta
-  ) =>
-  (name: Name): CustomEitherCall<Name, Meta, Params, Success, Failure> => {
-    return {
-      name,
-      request: (params: Params, meta?: Partial<Meta>): CallRequest<Name, Params, Meta> => {
-        const id = v4()
+export const CustomEitherCall = <
+  Name extends string,
+  Meta extends Record<any, any>,
+  Params extends Record<any, any>,
+  Success extends Record<any, any>,
+  Failure extends DefaultCallResponseResultFailure = DefaultCallResponseResultFailure
+>(
+  name: Name,
+  metaConstructor: (meta?: Partial<Meta>) => Meta
+): CustomEitherCall<Name, Meta, Params, Success, Failure> => {
+  return {
+    name,
+    request: (params: Params, meta?: Partial<Meta>): CallRequest<Name, Params, Meta> => {
+      const id = v4()
 
-        return {
-          id,
-          name,
-          params,
-          meta: metaConstructor(meta)
-        }
-      },
-      response: (
-        requestOrId: string | CallRequest<Name, Params, Meta>,
-        result: CustomEitherCallResponseResult<Success, Failure>,
-        meta?: Partial<Meta>
-      ) => {
-        const isString = typeof requestOrId === 'string'
+      return {
+        id,
+        name,
+        params,
+        meta: metaConstructor(meta)
+      }
+    },
+    response: (
+      requestOrId: string | CallRequest<Name, Params, Meta>,
+      result: CustomEitherCallResponseResult<Success, Failure>,
+      meta?: Partial<Meta>
+    ) => {
+      const isString = typeof requestOrId === 'string'
 
-        return {
-          id: isString ? requestOrId : requestOrId.id,
-          result,
-          meta: metaConstructor(meta)
-        }
-      },
-      success: (requestOrId: string | CallRequest<Name, Params, Meta>, success: Success, meta?: Partial<Meta>) => {
-        const isString = typeof requestOrId === 'string'
+      return {
+        id: isString ? requestOrId : requestOrId.id,
+        result,
+        meta: metaConstructor(meta)
+      }
+    },
+    success: (requestOrId: string | CallRequest<Name, Params, Meta>, success: Success, meta?: Partial<Meta>) => {
+      const isString = typeof requestOrId === 'string'
 
-        return {
-          id: isString ? requestOrId : requestOrId.id,
-          result: { $case: 'success', success },
-          meta: metaConstructor(meta)
-        }
-      },
-      failure: (requestOrId: string | CallRequest<Name, Params, Meta>, failure: Failure, meta?: Partial<Meta>) => {
-        const isString = typeof requestOrId === 'string'
+      return {
+        id: isString ? requestOrId : requestOrId.id,
+        result: { $case: 'success', success },
+        meta: metaConstructor(meta)
+      }
+    },
+    failure: (requestOrId: string | CallRequest<Name, Params, Meta>, failure: Failure, meta?: Partial<Meta>) => {
+      const isString = typeof requestOrId === 'string'
 
-        return {
-          id: isString ? requestOrId : requestOrId.id,
-          result: { $case: 'failure', failure },
-          meta: metaConstructor(meta)
-        }
+      return {
+        id: isString ? requestOrId : requestOrId.id,
+        result: { $case: 'failure', failure },
+        meta: metaConstructor(meta)
       }
     }
   }
+}
 
 // USAGE
 
@@ -120,8 +119,8 @@ export const CustomEitherCall =
 //   Params extends Record<any, any>,
 //   Success extends Record<any, any>,
 //   Failure extends DefaultCallResponseResultFailure = DefaultCallResponseResultFailure
-// >() => {
-//   return CustomEitherCall<Name, ExampleCustomEitherCallMeta, Params, Success, Failure>((meta) => {
+// >(name: Name) => {
+//   return CustomEitherCall<Name, ExampleCustomEitherCallMeta, Params, Success, Failure>(name, (meta) => {
 //     return {
 //       traceId: meta?.traceId ?? v4(),
 //       ts: meta?.ts ?? Date.now(),
