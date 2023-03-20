@@ -57,7 +57,7 @@
   ],
   "dependencies": {
     "uuid": "^9.0.0",
-    "@distributed-functions/core": "^0.0.21",
+    "@distributed-functions/core": "^0.0.22-7",
     "@fapfop/core": "0.0.45",
     "@fddf-ts/core": "0.0.21"
   }

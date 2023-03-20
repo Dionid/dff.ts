@@ -23,6 +23,9 @@
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "npm run lerna:beatify:check"
+    ],
+    "**/*.{js,yml,yaml,json,md}": [
+      "npm run lerna:prettier:check"
     ]
   },
   "license": "MIT",
