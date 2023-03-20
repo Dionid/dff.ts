@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.22-4",
+  "version": "0.0.22-6",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -35,10 +35,10 @@
     "copy-assets": "cp package.json ./lib && cp README.md ./lib",
     "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
     "test": "npm run test:unit",
-    "publish:prerelease": "npm run beatify:check && npm run build && standard-version --prerelease && npm run copy-assets && npm publish",
-    "publish:patch": "npm run beatify:check && npm run build && standard-version --release-as patch && npm run copy-assets && npm publish",
-    "publish:minor": "npm run beatify:check && npm run build && standard-version --release-as minor && npm run copy-assets && npm publish",
-    "publish:major": "npm run beatify:check && npm run build && standard-version --release-as major && npm run copy-assets && npm publish"
+    "publish:prerelease": "npm run beatify:check && npm run build && standard-version --prerelease && npm publish",
+    "publish:patch": "npm run beatify:check && npm run build && standard-version --release-as patch && npm publish",
+    "publish:minor": "npm run beatify:check && npm run build && standard-version --release-as minor && npm publish",
+    "publish:major": "npm run beatify:check && npm run build && standard-version --release-as major && npm publish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
