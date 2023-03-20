@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/transport-rabbitmq",
-  "version": "0.0.9",
+  "version": "0.0.10-0",
   "description": "Distributed Functions RabbitMQ Transport for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -27,7 +27,11 @@
     "version": "git add -A src",
     "postversion": "git push && git push --tags",
     "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
-    "test": "npm run test:unit"
+    "test": "npm run test:unit",
+    "publish:prerelease": "npm run beatify:check && npm run build && standard-version --prerelease && npm publish",
+    "publish:patch": "npm run beatify:check && npm run build && standard-version --release-as patch && npm publish",
+    "publish:minor": "npm run beatify:check && npm run build && standard-version --release-as minor && npm publish",
+    "publish:major": "npm run beatify:check && npm run build && standard-version --release-as major && npm publish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
