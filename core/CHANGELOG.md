@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.23](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.10...v0.0.23) (2023-03-20)
+
+
+### Features
+
+* added custom-either-call ([1f7707e](https://github.com/Dionid/distributed-functions-ts/commit/1f7707e026d95edfb4de50ab94503fac3cb2d438))
+
 ### [0.0.22](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.10-0...v0.0.22) (2023-03-20)
 
 ### [0.0.22-7](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.22-6...v0.0.22-7) (2023-03-20)
