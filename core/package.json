@@ -1,11 +1,21 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.21-1",
+  "version": "0.0.21",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    "*": "./lib/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/*"
+      ]
+    }
   },
   "scripts": {
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",

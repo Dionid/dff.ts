@@ -47,7 +47,8 @@
     "nx": "^14.8.3",
     "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "cspell": "^6.30.0"
   },
   "bugs": {
     "url": "https://github.com/Dionid/distributed-functions-ts/issues"
@@ -60,8 +61,5 @@
   "keywords": [
     "typescript",
     "distributed functions"
-  ],
-  "dependencies": {
-    "cspell": "^6.30.0"
-  }
+  ]
 }
