@@ -1,5 +1,6 @@
 export * as errors from './errors'
 export * as call from './call'
+export * as customEitherCall from './custom-either-call'
 export * as event from './event'
 export * as callHandler from './call-handler'
 export * as eventHandler from './event-handler'
