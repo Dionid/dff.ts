@@ -1,9 +1,9 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.22-6",
+  "version": "0.0.22-7",
   "description": "Distributed Functions for TypeScript",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
