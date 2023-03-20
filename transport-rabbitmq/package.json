@@ -1,11 +1,21 @@
 {
   "name": "@distributed-functions/transport-rabbitmq",
-  "version": "0.0.10-0",
+  "version": "0.0.10",
   "description": "Distributed Functions RabbitMQ Transport for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    "*": "./lib/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/*"
+      ]
+    }
   },
   "scripts": {
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\" --config ../.prettierrc --ignore-path ../.prettierignore",
