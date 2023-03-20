@@ -116,7 +116,7 @@ export const RabbitMQTransport = <
     })
   }
 
-  // # Create inmemory transport for local strategy
+  // # Create in-memory transport for local strategy
   const inMemoryTransport = InMemoryTransport<Ctx, ER, CR>({
     ctx,
     logger

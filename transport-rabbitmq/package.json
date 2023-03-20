@@ -1,18 +1,32 @@
 {
   "name": "@distributed-functions/transport-rabbitmq",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Distributed Functions RabbitMQ Transport for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    "*": "./lib/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/*"
+      ]
+    }
+  },
   "scripts": {
-    "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",
+    "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\" --config ../.prettierrc --ignore-path ../.prettierignore",
     "prettier:write": "npm run prettier:base -- --write",
     "prettier:check": "npm run prettier:base -- --check",
-    "lint:check": "eslint --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
-    "lint:fix": "eslint --fix --max-warnings 0 --format stylish \"src/**/*.ts{,x}\"",
+    "lint:base": "eslint -c ../.eslintrc.js --ignore-path ../.eslintignore",
+    "lint:check": "npm run lint:base -- --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
+    "lint:fix": "npm run lint:base -- --fix --max-warnings 0 --format stylish \"src/**/*.ts{,x}\"",
+    "spell:check": "cspell \"{README.md,CODE_OF_CONDUCT.md,CONTRIBUTING.md,.github/*.md,src/**/*.ts}\"",
+    "beatify:check": "npm run spell:check && npm run lint:check && npm run prettier:check",
+    "beatify:write": "npm run spell:check && npm run lint:fix && npm run prettier:write",
     "clean": "rimraf ./lib",
     "prerelease": "npm run build",
     "prebuild": "npm run clean",
@@ -22,10 +36,12 @@
     "preversion": "npm run spell:check && npm run lint:fix && npm run prettier:write",
     "version": "git add -A src",
     "postversion": "git push && git push --tags",
-    "spell:check": "cspell \"{README.md,CODE_OF_CONDUCT.md,CONTRIBUTING.md,.github/*.md,src/**/*.ts}\"",
     "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
     "test": "npm run test:unit",
-    "publish": "np"
+    "publish:prerelease": "npm run beatify:check && npm run build && standard-version --prerelease && npm publish",
+    "publish:patch": "npm run beatify:check && npm run build && standard-version --release-as patch && npm publish",
+    "publish:minor": "npm run beatify:check && npm run build && standard-version --release-as minor && npm publish",
+    "publish:major": "npm run beatify:check && npm run build && standard-version --release-as major && npm publish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
@@ -43,11 +59,6 @@
     "ts-jest": "^27.0.7",
     "typescript": "^4.9.4"
   },
-  "peerDependencies": {
-    "@distributed-functions/core": "^0.0.21",
-    "@fapfop/core": "0.0.40",
-    "@fddf-ts/core": "0.0.18"
-  },
   "bugs": {
     "url": "https://github.com/Dionid/distributed-functions-ts/issues"
   },
@@ -59,6 +70,9 @@
     "typescript"
   ],
   "dependencies": {
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "@distributed-functions/core": "^0.0.22-7",
+    "@fapfop/core": "0.0.45",
+    "@fddf-ts/core": "0.0.21"
   }
 }

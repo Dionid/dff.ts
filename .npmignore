@@ -4,6 +4,11 @@ tsconfig.json
 tslint.json
 .prettierrc
 src
+node_modules
 .gitignore
 tsconfig.*
 tslin.json
+coverage
+jest.config.unit.json
+junit_unit.xml
+CHANGELOG.md
