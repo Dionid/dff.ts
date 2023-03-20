@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.24](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.23...v0.0.24) (2023-03-20)
+
+
+### Features
+
+* added custom event ([f5eb9ee](https://github.com/Dionid/distributed-functions-ts/commit/f5eb9ee67700b8cac77e3f75d59a99132a584bdd))
+
 ### [0.0.23](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.10...v0.0.23) (2023-03-20)
 
 
