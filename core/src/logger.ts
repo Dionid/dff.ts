@@ -1,5 +1,6 @@
 export type Logger = {
-  info: (str: string) => any
-  warn: (str: string) => any
-  error: (str: string) => any
+  info: (...prop: any[]) => any
+  warn: (...prop: any[]) => any
+  error: (...prop: any[]) => any
+  child?: (...props: any[]) => Logger
 }

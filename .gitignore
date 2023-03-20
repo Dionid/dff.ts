@@ -9,3 +9,4 @@ es6
 coverage
 docs/examples
 .env
+junit_unit.xml

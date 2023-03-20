@@ -8,61 +8,45 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest --passWithNoTests",
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",
     "prettier:write": "npm run prettier:base -- --write",
     "prettier:check": "npm run prettier:base -- --check",
     "lint:check": "eslint --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
-    "lint:write": "npm run lint:check -- --fix",
+    "lint:fix": "eslint --fix --max-warnings 0 --format stylish \"src/**/*.ts{,x}\"",
     "clean": "rimraf ./lib",
     "prerelease": "npm run build",
     "prebuild": "npm run clean",
     "build:lib": "tsc -P tsconfig.build.json",
     "build:es": "tsc -P tsconfig.build-es6.json",
-    "build": "npm run build:lib && npm run build:es",
-    "prepare": "npm run build && cp -r ./lib/* . && rm -rf ./lib",
-    "prepublishOnly": "npm run lint:write",
-    "postpublish": "git clean -fd",
-    "preversion": "npm run lint:write",
-    "version": "npm run prettier:write && git add -A src",
-    "postversion": "git push && git push --tags && git clean -fd"
+    "build": "npm run build:lib && npm run build:es && cp package.json ./lib && cp README.md ./lib",
+    "preversion": "npm run spell:check && npm run lint:fix && npm run prettier:write",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags",
+    "spell:check": "cspell \"{README.md,CODE_OF_CONDUCT.md,CONTRIBUTING.md,.github/*.md,src/**/*.ts}\"",
+    "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
+    "test": "npm run test:unit",
+    "publish": "np"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/Dionid/distributed-functions-ts.git"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "preset": "ts-jest",
-    "collectCoverage": true,
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "lcov",
-      "text"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true
-      }
-    }
-  },
   "license": "MIT",
   "devDependencies": {
-    "@distributed-functions/core": "^0.0.13",
     "@types/amqplib": "^0.8.2",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.7",
+    "@types/uuid": "^9.0.1",
     "amqplib": "^0.10.3",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
-    "typescript": "^4.4.4"
+    "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "@distributed-functions/core": "^0.0.21",
+    "@fapfop/core": "0.0.40",
+    "@fddf-ts/core": "0.0.18"
   },
   "bugs": {
     "url": "https://github.com/Dionid/distributed-functions-ts/issues"
@@ -73,5 +57,8 @@
   ],
   "keywords": [
     "typescript"
-  ]
+  ],
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
 }

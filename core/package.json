@@ -1,67 +1,54 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.14",
+  "version": "0.0.21",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
   "publishConfig": {
     "access": "public"
   },
+  "exports": {
+    "*": "./lib/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/*"
+      ]
+    }
+  },
   "scripts": {
-    "test": "jest --passWithNoTests",
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",
     "prettier:write": "npm run prettier:base -- --write",
     "prettier:check": "npm run prettier:base -- --check",
     "lint:check": "eslint --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
-    "lint:write": "npm run lint:check -- --fix",
+    "lint:fix": "eslint --fix --max-warnings 0 --format stylish \"src/**/*.ts{,x}\"",
+    "spell:check": "cspell \"{README.md,CODE_OF_CONDUCT.md,CONTRIBUTING.md,.github/*.md,src/**/*.ts}\"",
+    "beatify": "npm run spell:check && npm run lint:fix && npm run prettier:write",
     "clean": "rimraf ./lib",
-    "prerelease": "npm run build",
     "prebuild": "npm run clean",
     "build:lib": "tsc -P tsconfig.build.json",
     "build:es": "tsc -P tsconfig.build-es6.json",
     "build": "npm run build:lib && npm run build:es",
-    "prepare": "npm run build && cp -r ./lib/* . && rm -rf ./lib",
-    "prepublishOnly": "npm run lint:write",
-    "postpublish": "git clean -fd",
-    "preversion": "npm run lint:write",
-    "version": "npm run prettier:write && git add -A src",
-    "postversion": "git push && git push --tags && git clean -fd"
+    "copy-assets": "cp package.json ./lib && cp README.md ./lib",
+    "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
+    "test": "npm run test:unit",
+    "publish:prepatch": "npm run beatify && npm run test && npm run build && npm version prepatch --legacy-peer-deps && npm run copy-assets && cd ./lib && npm publish",
+    "publish:patch": "npm run beatify && npm run test && npm run build && npm version patch && npm run copy-assets && git add -A src && git push && git push --tags && cd ./lib && npm publish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/Dionid/distributed-functions-ts.git"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts$",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "preset": "ts-jest",
-    "collectCoverage": true,
-    "coverageDirectory": "coverage",
-    "coverageReporters": [
-      "lcov",
-      "text"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true
-      }
-    }
-  },
   "license": "MIT",
   "devDependencies": {
-    "@fddf-ts/core": "^0.0.13",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.7",
     "@types/uuid": "^8.3.4",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
-    "typescript": "^4.4.4",
+    "typescript": "^4.9.4",
     "uuid": "^9.0.0"
   },
   "bugs": {
@@ -69,9 +56,15 @@
   },
   "homepage": "https://github.com/Dionid/distributed-functions-ts",
   "tags": [
-    "typescript"
+    "typescript",
+    "rpc",
+    "eda",
+    "framework"
   ],
   "keywords": [
-    "typescript"
+    "typescript",
+    "rpc",
+    "eda",
+    "framework"
   ]
 }

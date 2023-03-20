@@ -1,132 +1,71 @@
-import { JSONObject, JSONValue } from '@fddf-ts/core/jsonvalue'
 import { v4 } from 'uuid'
 
-export type CallErrorResponseErrorBase<
-  Code extends number = number,
-  Message extends string = string,
-  Data extends Record<any, any> | undefined = undefined
-> = {
-  code: Code
-  message: Message
+export type Empty = Record<string, never>
+
+export type CallRequest<Name extends string, Params extends Record<any, any>, Meta extends Record<any, any>> = {
+  id: string
+  name: Name
+  params: Params
+  meta: Meta
+}
+
+export type DefaultCallResponseResultFailure<Data extends Record<any, any> | undefined = undefined> = {
+  code: string
+  message: string
   data?: Data
 }
 
-export type CallServerErrorResponseError = CallErrorResponseErrorBase<500, 'Internal Server Error'>
-export type CallRequestTimeoutErrorResponseError = CallErrorResponseErrorBase<408, 'Request timeout'>
-export type CallNotFoundErrorResponseError = CallErrorResponseErrorBase<404>
-export type CallForbiddenErrorResponseError = CallErrorResponseErrorBase<403>
-export type CallBadRequestErrorResponseError = CallErrorResponseErrorBase<422>
-
-export type CallErrorResponseError =
-  | CallServerErrorResponseError
-  | CallNotFoundErrorResponseError
-  | CallForbiddenErrorResponseError
-  | CallBadRequestErrorResponseError
-  | CallRequestTimeoutErrorResponseError
-
-export type CallErrorResponse<RespError extends CallErrorResponseErrorBase = CallErrorResponseError> = {
-  id: string
-  error: RespError
-}
-
-export type CallRequest<Name extends string = string, ReqParams extends JSONObject = JSONObject> = {
-  id: string
-  name: Name
-  params: ReqParams
-}
-
-export type CallResponseResult<RespResult extends JSONObject = JSONObject> = {
-  id: string
-  result: RespResult
-}
-
 export type CallResponse<
-  RespResult extends JSONObject = JSONObject,
-  RespError extends CallErrorResponseErrorBase = CallErrorResponseError
-> = CallResponseResult<RespResult> | CallErrorResponse<RespError>
+  Result extends Record<any, any> | DefaultCallResponseResultFailure,
+  Meta extends Record<any, any>
+> = {
+  id: string
+  result: Result
+  meta: Meta
+}
 
 export type Call<
-  Name extends string = string,
-  ReqParams extends JSONObject = JSONObject,
-  RespResult extends JSONObject = JSONObject,
-  RespError extends CallErrorResponseErrorBase = CallErrorResponseError
+  Name extends string,
+  Meta extends Record<any, any>,
+  Request extends CallRequest<Name, any, Meta>,
+  Response extends CallResponse<any, Meta>
 > = {
   name: Name
-  requestParser?: RequestParser<ReqParams>
-  sideEffects?: boolean
-  request: (params: ReqParams, id?: string) => CallRequest<Name, ReqParams>
-  result: (
-    props: { id: string; result: RespResult } | { req: CallRequest<Name, ReqParams>; result: RespResult }
-  ) => CallResponseResult<RespResult>
-  error: (
-    props: { id: string; error: RespError } | { req: CallRequest<Name, ReqParams>; error: RespError }
-  ) => CallErrorResponse<RespError>
+  request: (...args: any[]) => Request
+  response: (...args: any[]) => Response
 }
 
-type RPF = (propName: string, val: JSONValue) => Promise<JSONValue> | JSONValue
-
-export type RequestParser<ReqParams extends JSONObject> = {
-  [K in keyof ReqParams]: ReqParams[K] extends JSONObject ? RequestParser<ReqParams[K]> : RPF
-}
+// # CONSTRUCTOR
 
 export const Call = <
-  Name extends string = string,
-  ReqParams extends JSONObject = JSONObject,
-  RespResult extends JSONObject = JSONObject,
-  RespError extends CallErrorResponseErrorBase = CallErrorResponseError
+  Name extends string,
+  Meta extends Record<any, any>,
+  Request extends CallRequest<Name, any, Meta>,
+  Response extends CallResponse<any, Meta>
 >(
-  name: Name,
-  props: {
-    sideEffects?: boolean
-    requestParser?: RequestParser<ReqParams> // TODO. Create from ReqParams
-  } = {}
-): Call<Name, ReqParams, RespResult, RespError> => {
-  const { sideEffects = false, requestParser } = props
-
+  name: Name
+) => {
   return {
     name,
-    requestParser,
-    sideEffects,
-    request: (params: ReqParams, id?: string) => {
+    request: (request: Omit<Request, 'id' | 'name'>) => {
       return {
-        id: id || v4(),
+        id: v4(),
         name,
-        params
-      }
+        ...request
+      } as Request
     },
-    result: (props: { id: string; result: RespResult } | { req: CallRequest<Name, ReqParams>; result: RespResult }) => {
-      const { result } = props
-
-      if ('req' in props) {
-        return {
-          id: props.req.id,
-          result
-        }
-      } else {
-        return {
-          id: props.id,
-          result
-        }
-      }
-    },
-    error: (props: { id: string; error: RespError } | { req: CallRequest<Name, ReqParams>; error: RespError }) => {
-      const { error } = props
-
-      if ('req' in props) {
-        return {
-          id: props.req.id,
-          error
-        }
-      } else {
-        return {
-          id: props.id,
-          error
-        }
-      }
+    response: (idOrRequest: string | Request, response: Omit<Response, 'id'>) => {
+      return {
+        id: typeof idOrRequest === 'string' ? idOrRequest : idOrRequest.id,
+        ...response
+      } as Response
     }
   }
 }
 
-export type DependantCalls<Deps extends Record<string, Call<any, any, any, any>>> = {
-  [K in keyof Deps]: (request: ReturnType<Deps[K]['request']>) => Promise<ReturnType<Deps[K]['result']>>
-}
+// # UTILS
+
+export type RequestFromCall<C extends Call<any, any, any, any>> = ReturnType<C['request']>
+export type ResponseFromCall<C extends Call<any, any, any, any>> = ReturnType<C['response']>
+
+export type CallsRecord = Record<string, Call<string, any, any, any>>
