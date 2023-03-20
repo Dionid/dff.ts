@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.21",
+  "version": "0.0.22-1",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -18,13 +18,15 @@
     }
   },
   "scripts": {
-    "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\"",
+    "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\" --config ../.prettierrc --ignore-path ../.prettierignore",
     "prettier:write": "npm run prettier:base -- --write",
     "prettier:check": "npm run prettier:base -- --check",
-    "lint:check": "eslint --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
-    "lint:fix": "eslint --fix --max-warnings 0 --format stylish \"src/**/*.ts{,x}\"",
+    "lint:base": "eslint -c ../.eslintrc.js --ignore-path ../.eslintignore",
+    "lint:check": "npm run lint:base -- --max-warnings 0 --format stylish \"!(node_modules)/**/*.ts{,x}\"",
+    "lint:fix": "npm run lint:base -- --fix --max-warnings 0 --format stylish \"src/**/*.ts{,x}\"",
     "spell:check": "cspell \"{README.md,CODE_OF_CONDUCT.md,CONTRIBUTING.md,.github/*.md,src/**/*.ts}\"",
-    "beatify": "npm run spell:check && npm run lint:fix && npm run prettier:write",
+    "beatify:check": "npm run spell:check && npm run lint:check && npm run prettier:check",
+    "beatify:write": "npm run spell:check && npm run lint:fix && npm run prettier:write",
     "clean": "rimraf ./lib",
     "prebuild": "npm run clean",
     "build:lib": "tsc -P tsconfig.build.json",
@@ -33,8 +35,10 @@
     "copy-assets": "cp package.json ./lib && cp README.md ./lib",
     "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
     "test": "npm run test:unit",
-    "publish:prepatch": "npm run beatify && npm run test && npm run build && npm version prepatch --legacy-peer-deps && npm run copy-assets && cd ./lib && npm publish",
-    "publish:patch": "npm run beatify && npm run test && npm run build && npm version patch && npm run copy-assets && git add -A src && git push && git push --tags && cd ./lib && npm publish"
+    "publish:prerelease": "npm run beatify:check && npm run build && standard-version --prerelease && npm run copy-assets && npm publish",
+    "publish:patch": "npm run beatify:check && npm run build && standard-version --release-as patch && npm run copy-assets && npm publish",
+    "publish:minor": "npm run beatify:check && npm run build && standard-version --release-as minor && npm run copy-assets && npm publish",
+    "publish:major": "npm run beatify:check && npm run build && standard-version --release-as major && npm run copy-assets && npm publish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {
