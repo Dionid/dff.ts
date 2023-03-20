@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.20-0",
+  "version": "0.0.21-1",
   "description": "Distributed Functions for TypeScript",
   "main": "index.js",
   "types": "index.d.ts",
@@ -19,11 +19,12 @@
     "prebuild": "npm run clean",
     "build:lib": "tsc -P tsconfig.build.json",
     "build:es": "tsc -P tsconfig.build-es6.json",
-    "build": "npm run build:lib && npm run build:es && cp package.json ./lib && cp README.md ./lib",
+    "build": "npm run build:lib && npm run build:es",
+    "copy-assets": "cp package.json ./lib && cp README.md ./lib",
     "test:unit": "jest --config jest.config.unit.json --passWithNoTests",
     "test": "npm run test:unit",
-    "publish:prepatch": "npm run beatify && npm run test && npm run build && npm version prepatch --legacy-peer-deps && cd ./lib && npm publish",
-    "publish:patch": "npm run beatify && npm run test && npm run build && npm version patch && git add -A src && git push && git push --tags"
+    "publish:prepatch": "npm run beatify && npm run test && npm run build && npm version prepatch --legacy-peer-deps && npm run copy-assets && cd ./lib && npm publish",
+    "publish:patch": "npm run beatify && npm run test && npm run build && npm version patch && npm run copy-assets && git add -A src && git push && git push --tags && cd ./lib && npm publish"
   },
   "author": "David Shekunts <ditreyw@gmail.com>",
   "repository": {

@@ -9,7 +9,16 @@ export type CallRequest<Name extends string, Params extends Record<any, any>, Me
   meta: Meta
 }
 
-export type CallResponse<Result extends Record<any, any>, Meta extends Record<any, any>> = {
+export type DefaultCallResponseResultFailure<Data extends Record<any, any> | undefined = undefined> = {
+  code: string
+  message: string
+  data?: Data
+}
+
+export type CallResponse<
+  Result extends Record<any, any> | DefaultCallResponseResultFailure,
+  Meta extends Record<any, any>
+> = {
   id: string
   result: Result
   meta: Meta
