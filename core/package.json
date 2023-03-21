@@ -1,6 +1,6 @@
 {
   "name": "@distributed-functions/core",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Distributed Functions for TypeScript",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

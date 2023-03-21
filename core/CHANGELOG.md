@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.26](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.24...v0.0.26) (2023-03-21)
+
+
+### Features
+
+* added peer deps config ([8262466](https://github.com/Dionid/distributed-functions-ts/commit/8262466d11a6f16cb34f9c28fdfb620cea20949e))
+* added peer deps config ([#6](https://github.com/Dionid/distributed-functions-ts/issues/6)) ([b4397b2](https://github.com/Dionid/distributed-functions-ts/commit/b4397b29cb526741ca5ab4ad326d1ee93f233be4))
+
 ### [0.0.24](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.23...v0.0.24) (2023-03-20)
 
 
