@@ -1,12 +1,12 @@
-import { App } from '@distributed-functions/core'
 import { RabbitMQTransport } from '@distributed-functions/transport-rabbitmq'
 
-import { GetUser } from '../../modules/iam/get-user/get-user'
+import { GetUserCallHandler } from '../../features/iam/get-user/get-user'
 
 const main = async () => {
-  const transport = RabbitMQTransport.new({
+  const transport = RabbitMQTransport({
+    appName: 'iam',
     config: {
-      host: 'localhost',
+      hostname: 'localhost',
       port: 5674,
       username: 'ff-user',
       password: 'ff-password',
@@ -15,16 +15,9 @@ const main = async () => {
     }
   })
 
-  const app = App<[GetUser]>({
-    name: 'iam',
-    dfs: [GetUser],
-    transport,
-    ctx: () => {
-      return {}
-    }
-  })
+  transport.call.subscribeHandler(GetUserCallHandler)
 
-  await app.start()
+  await transport.init()
 }
 
 main()

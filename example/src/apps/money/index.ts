@@ -1,13 +1,17 @@
-import { App } from '@distributed-functions/core'
 import { RabbitMQTransport } from '@distributed-functions/transport-rabbitmq'
 
-import { GetUser } from '../../modules/iam/get-user/get-user'
-import { WithdrawMoney } from '../../modules/money/withdraw'
+import { WithdrawMoneyCallHandler } from '../../features/money/withdraw'
 
 const main = async () => {
-  const transport = RabbitMQTransport.new({
+  const transport = RabbitMQTransport({
+    appName: 'money',
+    ctx: () => {
+      return {
+        some: 1000
+      }
+    },
     config: {
-      host: 'localhost',
+      hostname: 'localhost',
       port: 5674,
       username: 'ff-user',
       password: 'ff-password',
@@ -16,18 +20,9 @@ const main = async () => {
     }
   })
 
-  const app = App<[WithdrawMoney, GetUser]>({
-    name: 'money',
-    dfs: [WithdrawMoney, GetUser],
-    transport,
-    ctx: () => {
-      return {
-        some: 1
-      }
-    }
-  })
+  transport.call.subscribeHandler(WithdrawMoneyCallHandler)
 
-  await app.start()
+  await transport.init()
 }
 
 main()

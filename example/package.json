@@ -1,14 +1,15 @@
 {
     "name": "@distributed-functions/example",
     "dependencies": {
-        "@fddf-ts/core": "^0.0.13"
+        "@distributed-functions/core": "^0.0.26",
+        "@distributed-functions/transport-rabbitmq": "^0.0.11",
+        "@fapfop/core": "^0.0.45",
+        "@fddf-ts/core": "^0.0.21",
+        "@types/uuid": "^9.0.1",
+        "fastify": "^4.15.0",
+        "uuid": "^9.0.0"
     },
     "scripts": {
         "build": "rimraf dist && tsc"
-    },
-    "devDependencies": {
-        "@distributed-functions/core": "^0.0.14",
-        "@distributed-functions/transport-rabbitmq": "^0.0.9",
-        "@distributed-functions/trigger-http": "^0.0.9"
     }
 }
