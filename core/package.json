@@ -3,19 +3,20 @@
   "version": "0.0.27-1",
   "description": "Distributed Functions for TypeScript",
   "main": "./lib/index.js",
+  "module": "./lib/es6/index.js",
   "types": "./lib/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
-    "*": "./lib/*.js"
+    ".": "./lib/index.js"
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "lib/*"
+      "index": [
+        "lib/index.d.ts"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\" --config ../.prettierrc --ignore-path ../.prettierignore",
