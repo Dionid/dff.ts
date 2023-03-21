@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.27-0](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.11...v0.0.27-0) (2023-03-21)
+
+
+### Features
+
+* example working ([d63123e](https://github.com/Dionid/distributed-functions-ts/commit/d63123e3b785e6a936866bf8b28def68f6c97ce3))
+
 ### [0.0.26](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.24...v0.0.26) (2023-03-21)
 
 
