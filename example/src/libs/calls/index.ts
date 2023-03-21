@@ -1,5 +1,4 @@
-import { DefaultCallResponseResultFailure } from '@distributed-functions/core/call'
-import { CustomEitherCall } from '@distributed-functions/core/custom-either-call'
+import { CustomEitherCall, DefaultCallResponseResultFailure } from '@distributed-functions/core'
 import { v4 } from 'uuid'
 
 // # Specify your own call

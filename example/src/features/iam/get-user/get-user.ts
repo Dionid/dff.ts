@@ -1,4 +1,4 @@
-import { CallHandler } from '@distributed-functions/core/call-handler'
+import { CallHandler } from '@distributed-functions/core'
 
 import { GetUserCall } from '../../../libs/calls'
 

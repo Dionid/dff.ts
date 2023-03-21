@@ -1,4 +1,4 @@
-import { CallHandler } from '@distributed-functions/core/call-handler'
+import { CallHandler } from '@distributed-functions/core'
 import { InternalError } from '@fddf-ts/core/typed-errors'
 
 import { GetUserCall, WithdrawMoneyCall } from '../../../libs/calls'
