@@ -2,20 +2,21 @@
   "name": "@distributed-functions/transport-rabbitmq",
   "version": "0.0.11",
   "description": "Distributed Functions RabbitMQ Transport for TypeScript",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
+  "main": "./lib/index.js",
+  "module": "./lib/es6/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
-    "*": "./lib/*.js"
+    ".": "./lib/index.js"
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "lib/*"
+      "index": [
+        "lib/index.d.ts"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "prettier:base": "prettier \"**/*.{js,ts{,x},yml,yaml,json,md}\" --config ../.prettierrc --ignore-path ../.prettierignore",
@@ -50,7 +51,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@distributed-functions/core": "^0.0.26",
+    "@distributed-functions/core": "^0.0.27",
     "@fapfop/core": "0.0.45",
     "@fddf-ts/core": "0.0.21",
     "@types/amqplib": "^0.8.2",
@@ -76,7 +77,7 @@
     "uuid": "^9.0.0"
   },
   "peerDependencies": {
-    "@distributed-functions/core": "^0.0.26",
+    "@distributed-functions/core": "^0.0.27",
     "@fapfop/core": "^0.0.45",
     "@fddf-ts/core": "^0.0.21"
   }
