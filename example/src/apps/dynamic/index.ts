@@ -1,12 +1,17 @@
-import { App } from '@distributed-functions/core'
 import { RabbitMQTransport } from '@distributed-functions/transport-rabbitmq'
 
-import { Dynamic } from '../../modules/some/dynamic'
+import { DynamicCallHandler } from '../../features/dynamic'
 
 const main = async () => {
-  const transport = RabbitMQTransport.new({
+  const transport = RabbitMQTransport({
+    appName: 'dynamic',
+    ctx: () => {
+      return {
+        dynamicDep: 'some_dep'
+      }
+    },
     config: {
-      host: 'localhost',
+      hostname: 'localhost',
       port: 5674,
       username: 'ff-user',
       password: 'ff-password',
@@ -15,18 +20,9 @@ const main = async () => {
     }
   })
 
-  const app = App<[Dynamic]>({
-    name: 'iam',
-    dfs: [Dynamic('12345')],
-    transport,
-    ctx: () => {
-      return {
-        dynamicDep: 'YESSS'
-      }
-    }
-  })
+  transport.call.subscribeHandler(DynamicCallHandler('12345'))
 
-  await app.start()
+  await transport.init()
 }
 
 main()

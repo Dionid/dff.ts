@@ -6,11 +6,10 @@ import { DynamicCall, WithdrawMoneyCall } from '../../libs/calls'
 // ORGANISM
 
 const main = async () => {
-  // const logger = pino({})
-
-  const transport = RabbitMQTransport.new({
+  const transport = RabbitMQTransport({
+    appName: 'initiator',
     config: {
-      host: 'localhost',
+      hostname: 'localhost',
       port: 5674,
       username: 'ff-user',
       password: 'ff-password',
@@ -22,7 +21,7 @@ const main = async () => {
 
   await transport.init()
 
-  const res = await transport.publish<WithdrawMoneyCall>(
+  const res = await transport.call.publish<WithdrawMoneyCall>(
     WithdrawMoneyCall.request({
       address: 'qweqwe',
       amount: 1,
@@ -35,7 +34,7 @@ const main = async () => {
   // eslint-disable-next-line no-restricted-syntax
   console.log('res', res)
 
-  const dRes = await transport.publish<DynamicCall>(
+  const dRes = await transport.call.publish<DynamicCall>(
     DynamicCall('12345').request({
       address: 'asdasdqwe',
       amount: 0

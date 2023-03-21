@@ -1,4 +1,4 @@
-import { Logger } from '@distributed-functions/core/logger'
+import { Logger } from '@distributed-functions/core'
 import { WaitGroup } from '@fapfop/core/wait-group'
 import { connect, Connection, Options } from 'amqplib'
 

@@ -1,14 +1,16 @@
 {
     "name": "@distributed-functions/example",
     "dependencies": {
-        "@fddf-ts/core": "^0.0.13"
+        "@distributed-functions/core": "^0.0.27",
+        "@distributed-functions/transport-rabbitmq": "^0.0.12",
+        "@fapfop/core": "^0.0.45",
+        "@fddf-ts/core": "^0.0.21",
+        "@types/uuid": "^9.0.1",
+        "fastify": "^4.15.0",
+        "uuid": "^9.0.0"
     },
     "scripts": {
-        "build": "rimraf dist && tsc"
-    },
-    "devDependencies": {
-        "@distributed-functions/core": "^0.0.14",
-        "@distributed-functions/transport-rabbitmq": "^0.0.9",
-        "@distributed-functions/trigger-http": "^0.0.9"
+        "build": "rimraf dist && tsc",
+        "start": "node ./dist/apps/dynamic/index.js"
     }
 }

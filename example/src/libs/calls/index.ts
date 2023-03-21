@@ -1,8 +1,37 @@
-import { Call } from '@distributed-functions/core'
-import { JSONValue } from '@fddf-ts/core/jsonvalue'
+import { CustomEitherCall, DefaultCallResponseResultFailure } from '@distributed-functions/core'
+import { v4 } from 'uuid'
+
+// # Specify your own call
+export type ExampleCustomEitherCallMeta = {
+  traceId: string
+  ts: number
+}
+
+export type ExampleCustomEitherCall<
+  Name extends string,
+  RequestParams extends Record<any, any>,
+  Success extends Record<any, any>,
+  Failure extends DefaultCallResponseResultFailure = DefaultCallResponseResultFailure
+> = CustomEitherCall<Name, ExampleCustomEitherCallMeta, RequestParams, Success, Failure>
+
+export const ExampleCustomEitherCall = <
+  Name extends string,
+  Params extends Record<any, any>,
+  Success extends Record<any, any>,
+  Failure extends DefaultCallResponseResultFailure = DefaultCallResponseResultFailure
+>(
+  name: Name
+) => {
+  return CustomEitherCall<Name, ExampleCustomEitherCallMeta, Params, Success, Failure>(name, (meta) => {
+    return {
+      traceId: meta?.traceId ?? v4(),
+      ts: meta?.ts ?? Date.now()
+    }
+  })
+}
 
 export type GetUserCall = typeof GetUserCall
-export const GetUserCall = Call<
+export const GetUserCall = ExampleCustomEitherCall<
   'GetUser',
   {
     userId: string
@@ -13,7 +42,7 @@ export const GetUserCall = Call<
 >('GetUser')
 
 export type WithdrawMoneyCall = typeof WithdrawMoneyCall
-export const WithdrawMoneyCall = Call<
+export const WithdrawMoneyCall = ExampleCustomEitherCall<
   'WithdrawMoney',
   {
     amount: number
@@ -26,36 +55,20 @@ export const WithdrawMoneyCall = Call<
     email: string
     amount: number
     address: string
-  },
-  {
-    code: 100
-    message: 'Shiiiit'
   }
->('WithdrawMoney', {
-  requestParser: {
-    amount: JSONValue.toNumber,
-    address: JSONValue.toString,
-    test: {
-      foo: JSONValue.toString
-    }
-  }
-})
+>('WithdrawMoney')
 
 export type DynamicCall = ReturnType<typeof DynamicCall>
 
 export const DynamicCall = (id: string) => {
-  return Call<
-    `Dinamic_${typeof id}`,
+  return ExampleCustomEitherCall<
+    `Dynamic.${typeof id}`,
     {
       amount: number
       address: string
     },
     {
       someResp: string
-    },
-    {
-      code: 100
-      message: 'Shiiiit'
     }
-  >(`Dinamic_${id}`)
+  >(`Dynamic.${id}`)
 }

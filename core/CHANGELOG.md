@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.27](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.27-1...v0.0.27) (2023-03-21)
+
+
+### Features
+
+* changed index ([26736e1](https://github.com/Dionid/distributed-functions-ts/commit/26736e19bdbb5960d70591d419534018a6ea96ea))
+
+### [0.0.27-1](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.27-0...v0.0.27-1) (2023-03-21)
+
+### [0.0.27-0](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.11...v0.0.27-0) (2023-03-21)
+
+
+### Features
+
+* example working ([d63123e](https://github.com/Dionid/distributed-functions-ts/commit/d63123e3b785e6a936866bf8b28def68f6c97ce3))
+
+### [0.0.26](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.24...v0.0.26) (2023-03-21)
+
+
+### Features
+
+* added peer deps config ([8262466](https://github.com/Dionid/distributed-functions-ts/commit/8262466d11a6f16cb34f9c28fdfb620cea20949e))
+* added peer deps config ([#6](https://github.com/Dionid/distributed-functions-ts/issues/6)) ([b4397b2](https://github.com/Dionid/distributed-functions-ts/commit/b4397b29cb526741ca5ab4ad326d1ee93f233be4))
+
 ### [0.0.24](https://github.com/Dionid/distributed-functions-ts/compare/v0.0.23...v0.0.24) (2023-03-20)
 
 
